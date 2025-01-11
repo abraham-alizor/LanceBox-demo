@@ -1,0 +1,10 @@
+export {default as introBackground1} from './png/1.png';
+export {default as introBackground2} from './png/2.png';
+export {default as introBackground3} from './png/3.png';
+export {default as landingpagebackground} from './png/LandingPageBackground.png';
+export {default as logo} from './png/standard_bank_logo.png';
+export {default as ad_1} from './png/ad.png';
+export {default as avatar} from './png/avatar.png';
+export {default as fullLogo} from './svg/fulllogo.png';
+export {default as placeholder} from './png/placeholder.png';
+// export const landingpagebackground = require("./png/LandingPageBackground.png")

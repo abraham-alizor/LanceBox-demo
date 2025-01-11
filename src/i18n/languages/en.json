@@ -1,0 +1,19 @@
+{
+  "intro": {
+    "firstPhrase": "Transparent and seamless FX auctions - trade with confidence.",
+    "secondPhrase": "Auction, bid and exchange currencies with ease.",
+    "thirdPhrase": "Unlock new opportunities with us in the global forex market."
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "createProfile": "Create Profile",
+    "forgotPassword": "Forgot Password"
+ 
+  },
+  "app": {
+    "initiate": "Initiate bid"
+  }
+
+}
