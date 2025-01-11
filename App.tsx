@@ -1,5 +1,5 @@
-import React, {useEffect} from 'react';
-import {SafeAreaView, StatusBar} from 'react-native';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import RootNavigation from './src/navigations/RootNavigation';
 import {NavigationContainer} from '@react-navigation/native';
 import {ThemeProvider} from '@shopify/restyle';
@@ -9,18 +9,10 @@ import BottomSheetProvider from './src/contexts/BottomSheet/provider';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import QueryClients from './src/config/QueryClient';
 import {QueryClientProvider} from '@tanstack/react-query';
-import SplashScreen from 'react-native-splash-screen';
 
 i18nextConfig.initalizeI18Next();
 
 function App(): React.JSX.Element {
-  useEffect(() => {
-    const splashTimer = setTimeout(() => {
-      SplashScreen.hide();
-    }, 3000);
-    // Cleanup the timer on unmount
-    return () => clearTimeout(splashTimer);
-  }, []); // E
   return (
     <GestureHandlerRootView>
       <ThemeProvider theme={theme.lightTheme}>
