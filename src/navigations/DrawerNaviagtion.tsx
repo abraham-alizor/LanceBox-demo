@@ -1,8 +1,6 @@
+/* eslint-disable react/no-unstable-nested-components */
 import * as React from 'react';
-import {View} from 'react-native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {useNavigation} from '@react-navigation/native';
-import {Button} from '@react-navigation/elements';
 import CustomDrawerContent from '@/shared/components/DrawerNav';
 import {SvgIcon} from '@/assets/SvgIcon';
 import DashboardScreen from '@/screens/Dashboard';
@@ -15,7 +13,7 @@ const Drawer = createDrawerNavigator();
 export default function DrawerNavigation() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <CustomDrawerContent {...props} />} // Use the custom drawer content
+      drawerContent={props => <CustomDrawerContent {...props} />}
       screenOptions={{
         headerShown: false,
         drawerContentContainerStyle: {
@@ -37,7 +35,7 @@ export default function DrawerNavigation() {
         component={DashboardScreen}
         options={{
           drawerIcon: () => (
-            <SvgIcon name="invoice" color="transparent" size="sm" /> // Add icon for Home
+            <SvgIcon name="invoice" color="transparent" size="sm" />
           ),
         }}
       />
@@ -46,7 +44,7 @@ export default function DrawerNavigation() {
         component={ProfileScreen}
         options={{
           drawerIcon: () => (
-            <SvgIcon name="userSquare" color="transparent" size="sm" /> // Add icon for Notifications
+            <SvgIcon name="userSquare" color="transparent" size="sm" />
           ),
         }}
       />
@@ -55,7 +53,7 @@ export default function DrawerNavigation() {
         component={ReceiptScreen}
         options={{
           drawerIcon: () => (
-            <SvgIcon name="receipts" color="transparent" size="sm" /> // Add icon for Home
+            <SvgIcon name="receipts" color="transparent" size="sm" />
           ),
         }}
       />
@@ -64,7 +62,7 @@ export default function DrawerNavigation() {
         component={SettingScreen}
         options={{
           drawerIcon: () => (
-            <SvgIcon name="settings" color="transparent" size="sm" /> // Add icon for Notifications
+            <SvgIcon name="settings" color="transparent" size="sm" />
           ),
         }}
       />

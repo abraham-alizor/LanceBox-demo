@@ -15,6 +15,7 @@ import {BaseButton, BaseButtonProps} from '../components/Buttons/BaseButton';
 import {Text, TextProps} from '../components/Typography';
 import {SvgIcon} from '@/assets/SvgIcon';
 import {useNavigation} from '@react-navigation/native';
+import Loader from '../components/Loading/loading';
 
 interface Style {
   imageName?: number;
@@ -34,6 +35,7 @@ interface Style {
   bottomButtonTextProps?: TextProps;
   HeaderTitle: String;
   hideBackButton?: boolean;
+  activityLoading?: boolean;
 }
 const MainLayout = ({
   children,
@@ -50,11 +52,13 @@ const MainLayout = ({
   bottomButtonTextProps,
   bottomButtonPress = () => {},
   backButtonPress,
+  activityLoading = false,
 }: Style) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   return (
     <Box backgroundColor={backgroundColor} flex={1}>
+      {activityLoading && <Loader visible={activityLoading} />}
       <Box flex={1}>
         <Box height={insets.top} />
         <Box

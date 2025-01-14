@@ -1,8 +1,6 @@
 import {SvgIcon} from '@/assets/SvgIcon';
-import {BidInfo, bidInfoData} from '../../mock';
 import {AppNavigationProps} from '@/navigations/types';
 import {Box} from '@/shared/components/Box';
-import BidInfoCard from '@/shared/components/cards';
 import {ScrollBox} from '@/shared/components/ScrollBox';
 import {Text} from '@/shared/components/Typography';
 import MainLayout from '@/shared/layout/MainLayout';

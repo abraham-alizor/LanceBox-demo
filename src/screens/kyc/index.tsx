@@ -134,7 +134,7 @@ const Kyc: FC<RootNavigationProps<'LoginScreen'>> = ({navigation}) => {
               </Box>
 
               <Box columnGap={'md'} flexDirection={'row'} alignItems={'center'}>
-                <Text variant={'regular12'}>Set Up Profile</Text>{' '}
+                <Text variant={'regular12'}>Set Up Profile</Text>
                 <Text>{'>'}</Text>
                 <Text variant={'regular12'} color={'gray400'}>
                   Personal Details
@@ -258,8 +258,6 @@ const Kyc: FC<RootNavigationProps<'LoginScreen'>> = ({navigation}) => {
                   Skip for now
                 </Text>
               </TouchableOpacity>
-
-              {/* Rest of your component */}
             </KeyboardAvoidingView>
           </Box>
         </ScrollView>

@@ -18,6 +18,36 @@ import {TouchableOpacity} from '@/shared/components/TouchableOpacity';
 import {useInvoiceStore} from '../../store/index';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
+// Validation schema for Step 1
+const step1Schema = yup.object().shape({
+  clientName: yup.string().required("Client's Name is required"),
+  yourName: yup.string().required('Your Name is required'),
+  insuranceDate: yup.date(),
+  currency: yup.string().required('Currency is required'),
+  invoiceTitle: yup.string().required('Invoice Title is required'),
+  itemDescription: yup.string().required('Item Description is required'),
+  quantity: yup
+    .number()
+    .required('Quantity is required')
+    .positive('Quantity must be positive'),
+  price: yup
+    .number()
+    .required('Unit Price is required')
+    .positive('Unit Price must be positive'),
+  amount: yup
+    .number()
+    .required('Amount is required')
+    .positive('Amount must be positive'),
+});
+
+// Validation schema for Step 2
+const step2Schema = yup.object().shape({
+  bankNumber: yup.string().required('Bank Number is required'),
+  bankName: yup.string().required('Bank Name is required'),
+  accountName: yup.string().required('Account Name is required'),
+  paymentTerms: yup.string().required('Payment Terms are required'),
+});
+// .concat(step1Schema);
 // Currency options
 const CURRENCY_LIST = [
   {id: 'usd', value: 'USD'},
@@ -33,17 +63,11 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const {
-    clientName,
-    yourName,
-    insuranceDate,
-    currency,
-    invoiceTitle,
+    bankInfo,
+    clientInfo,
     invoiceItems,
-    bankNumber,
-    bankName,
-    accountName,
-    paymentTerms,
-    setFormData,
+    setBankInfo,
+    setClientInfo,
     addInvoiceItem,
     removeInvoiceItem,
     resetForm,
@@ -57,12 +81,13 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
     setValue: setStep1Value,
     reset: resetStep1,
   } = useForm({
+    resolver: yupResolver(step1Schema),
     defaultValues: {
-      clientName,
-      yourName,
-      insuranceDate,
-      currency,
-      invoiceTitle,
+      clientName: clientInfo?.clientName || '',
+      yourName: clientInfo?.yourName || '',
+      insuranceDate: clientInfo?.insuranceDate || undefined,
+      currency: clientInfo?.currency || '',
+      invoiceTitle: '',
       itemDescription: '',
       quantity: undefined,
       price: undefined,
@@ -76,11 +101,12 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
     formState: {errors: step2Errors},
     reset: resetStep2,
   } = useForm({
+    resolver: yupResolver(step2Schema),
     defaultValues: {
-      bankNumber,
-      bankName,
-      accountName,
-      paymentTerms,
+      bankNumber: '',
+      bankName: '',
+      accountName: '',
+      paymentTerms: '',
     },
   });
 
@@ -98,7 +124,20 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
   const onSubmitStep1 = async data => {
     try {
       setIsLoading(true);
-      setFormData(data);
+      setClientInfo({
+        clientName: data.clientName,
+        currency: data.currency,
+        insuranceDate: data.insuranceDate,
+        yourName: data.yourName,
+      });
+      addInvoiceItem({
+        amount: data.amount,
+        currency: data.currency,
+        invoiceTitle: data.invoiceTitle,
+        itemDescription: data.itemDescription,
+        price: data.price,
+        quantity: data.quantity,
+      });
       setStepForm(2);
     } catch (error) {
       console.error('Step 1 Submission Error:', error);
@@ -108,23 +147,33 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
   };
 
   const onSubmitStep2 = async data => {
+    console.log(1);
     try {
+      console.log(2);
+
       setIsLoading(true);
-      setFormData(data);
-      setStepForm(3);
+      setBankInfo({
+        accountName: data.accountName,
+        bankName: data.bankName,
+        bankNumber: data.bankNumber,
+        paymentTerms: data.paymentTerms,
+      });
+      navigation.navigate('PreviewScreen');
     } catch (error) {
       console.error('Step 2 Submission Error:', error);
+      setIsLoading(false);
     } finally {
       setIsLoading(false);
     }
   };
-
   const handleAddItem = () => {
+    const quantity = watchStep1('quantity');
+    const price = watchStep1('price');
     const itemData = {
       itemDescription: watchStep1('itemDescription'),
-      quantity: watchStep1('quantity'),
-      price: watchStep1('price'),
-      amount: watchStep1('amount'),
+      quantity,
+      price,
+      amount: quantity * price, // Calculate amount automatically
       currency: watchStep1('currency'),
       invoiceTitle: watchStep1('invoiceTitle'),
     };
@@ -191,7 +240,7 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
                   justifyContent={'space-between'}
                   alignItems={'center'}>
                   <Box maxWidth={'15%'}>
-                    <Text variant={'regular10'}>Invoice Details</Text>{' '}
+                    <Text variant={'regular10'}>Invoice Details</Text>
                   </Box>
                   <Box maxWidth={'4%'}>
                     <Text variant={'regular12'}>{'>'}</Text>
@@ -348,19 +397,6 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
                             <Text>{item.quantity}</Text>
                           </Box>
                         </Box>
-
-                        <Box>
-                          <Text marginBottom={'sm'}>Item Description</Text>
-
-                          <Box
-                            paddingHorizontal={'md'}
-                            borderRadius={'sm'}
-                            paddingVertical={'md'}
-                            borderWidth={1}
-                            borderColor={'gray400'}>
-                            <Text>{item.itemDescription}</Text>
-                          </Box>
-                        </Box>
                       </Box>
 
                       <TouchableOpacity
@@ -455,7 +491,7 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
                     <SimpleInput
                       control={step1Control}
                       name="amount"
-                      error={step1Errors.quantity?.message}
+                      error={step1Errors.amount?.message}
                       borderColor="gray200"
                       labelColor="black"
                       inputProps={{
@@ -544,7 +580,7 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
                   <Box maxWidth={'15%'}>
                     <Text variant={'regular10'} color={'gray400'}>
                       Invoice Details
-                    </Text>{' '}
+                    </Text>
                   </Box>
                   <Box maxWidth={'4%'}>
                     <Text variant={'regular12'} color={'gray400'}>
@@ -589,7 +625,7 @@ const AddNewInvoice: FC<AppNavigationProps<'DashboardScreen'>> = ({
                   <SimpleInput
                     control={step2Control}
                     name="bankNumber"
-                    error={step2Control.bankNumber?.message}
+                    error={step2Errors.bankNumber?.message}
                     borderColor="gray200"
                     labelColor="black"
                     inputProps={{

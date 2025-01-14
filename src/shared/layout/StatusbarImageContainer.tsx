@@ -44,7 +44,7 @@ const StatusbarImageContainer = ({
             paddingRight: RfValue(16),
             paddingLeft: RfValue(4),
           }}>
-          <SvgIcon name="chevronleft" size="md" color="black" />{' '}
+          <SvgIcon name="chevronleft" size="md" color="black" />
           <Text>Back</Text>
         </TouchableOpacity>
       )}

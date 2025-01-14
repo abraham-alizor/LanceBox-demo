@@ -5,6 +5,7 @@ import AuthenticationStack from './AuthenticationStack';
 import Kyc from '@/screens/kyc';
 import DrawerNavigation from './DrawerNaviagtion';
 import AddNewInvoice from '@/screens/Dashboard/AddNewInvoice';
+import PreviewScreen from '@/screens/Dashboard/Preview';
 // Import the DrawerNavigation
 
 const Stack = createNativeStackNavigator<RootStacksParameterList>();
@@ -19,19 +20,18 @@ export default function RootNavigation() {
         gestureEnabled: false,
         animationTypeForReplace: 'push',
       }}>
-      {/* Authentication Stack */}
       <Stack.Screen
         name="AuthenticationStack"
         component={AuthenticationStack}
       />
 
-      {/* KYC Screen */}
       <Stack.Screen name="Kyc" component={Kyc} />
 
       <Stack.Screen name="DashboardScreen">
         {() => <DrawerNavigation />}
       </Stack.Screen>
       <Stack.Screen name="AddNewInvoice" component={AddNewInvoice} />
+      <Stack.Screen name="PreviewScreen" component={PreviewScreen} />
     </Stack.Navigator>
   );
 }

@@ -16,7 +16,6 @@ export default function AuthenticationStack() {
           headerShown: false,
           animation: 'slide_from_left',
           animationDuration: 50,
-          //   contentStyle: { backgroundColor: "#0033AA" },
           gestureEnabled: false,
           animationTypeForReplace: 'push',
         }}>
